@@ -1,0 +1,10 @@
+.DS_Store
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.ent
+*.log
+*.out
+*.run.xml
+auto/

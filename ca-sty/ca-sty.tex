@@ -1,0 +1,191 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FONT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{anyfontsize}
+\usepackage[no-math]{fontspec}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+
+\setmainfont{Times New Roman}[%
+  Path            = ca-sty/fonts/,%
+  Extension       = {.ttf},%
+  UprightFont     = {*},%
+  BoldFont        = {* Bold},%
+  ItalicFont      = {* Italic},%
+  BoldItalicFont  = {* Bold Italic}]
+
+\setsansfont{Arial}[%
+  Path            = ca-sty/fonts/,%
+  Extension       = {.ttf},%
+  UprightFont     = {*},%
+  BoldFont        = {* Bold},%
+  ItalicFont      = {* Italic},%
+  BoldItalicFont  = {* Bold Italic}]
+
+\setmathsfont(Digits,Latin)[%
+  Path            = ca-sty/fonts/,%
+  Extension       = {.ttf},%
+  UprightFont     = {*},%
+  BoldFont        = {* Bold},%
+  ItalicFont      = {* Italic},%
+  BoldItalicFont  = {* Bold Italic}%
+]{Times New Roman}
+
+\setmathrm[%
+  Path            = ca-sty/fonts/,%
+  Extension       = {.ttf},%
+  UprightFont     = {*},%
+  BoldFont        = {* Bold},%
+  ItalicFont      = {* Italic},%
+  BoldItalicFont  = {* Bold Italic}%
+]{Times New Roman}
+
+\newfontfamily\relaxed[%
+  WordSpace=1.8,%
+  LetterSpace=14,%
+  Path            = ca-sty/fonts/,%
+  Extension       = {.ttf},%
+  UprightFont     = {*},%
+  BoldFont        = {* Bold},%
+  ItalicFont      = {* Italic},%
+  BoldItalicFont  = {* Bold Italic}%
+]{Times New Roman}
+
+% \usepackage{mathptmx}
+% \usepackage{helvet}
+% \usepackage[letterspace=200,tracking=true]{microtype}
+% \let\relaxed\lsstyle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LAYOUT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[%
+  a4paper,%
+  hmargin = 1in,
+  includehead,
+  headheight = 1in,
+  footskip = 0.5in,
+  tmargin = 0mm,
+  bmargin = \dimexpr1.5in+\ht\strutbox\relax,
+  footnotesep = 0.5in plus 4pt minus 4pt
+]{geometry}
+\setlength{\parskip}{12pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\baselinestretch}{1.15}
+\usepackage[document]{ragged2e}
+
+% color
+\usepackage{xcolor}
+\definecolor{ca}{RGB}{59,79,141}
+
+% caption
+\usepackage{float}
+\usepackage{caption}
+\DeclareCaptionFormat{ca}{\itshape\fontsize{10}{11}\selectfont#1#2#3}
+\captionsetup{format=ca}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{adjustbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FOOTNOTE/ENDNOTE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chicago style
+\usepackage[notes,backend=biber,%
+  includeall=false,booklongxref=false,%
+  compresspages,noibid,doi=only,autolang=other,%
+  bibencoding=inputenc,footmarkoff%
+]{biblatex-chicago}
+\newcommand\mfs{\textsuperscript{,}\nobreak}
+% Those two packages clash but it doesn't really matter much
+%\addtolength{\skip\footins}{2pc plus 5pt}
+\usepackage{footmisc}
+\usepackage{endnotes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Header and footer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\fancyhf{}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[CE]{\fontsize{8}{10}\selectfont\MakeUppercase{\relaxed \headertitle}}
+\fancyhead[CO]{\fontsize{8}{10}\selectfont\MakeUppercase{\relaxed Journal of Cultural Analytics}}
+\fancyfoot[C]{\thepage}
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DON'T TOUCH THIS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\renewcommand{\maketitle}{\bgroup
+  \renewcommand{\footnoterule}{}
+  \renewcommand\@makefnmark{}
+  %%
+  \renewcommand\@makefntext[1]{%
+    \parindent 0pt%
+    \sffamily\fontsize{8}{12}\selectfont%
+    {}
+  ##1}
+ %%
+  \newcommand\authorinfo[1]{%
+    \begingroup
+      \renewcommand\thefootnote{}\footnote{##1}%
+      \addtocounter{footnote}{-1}%
+    \endgroup 
+  }
+ \begin{minipage}[t]{\textwidth}
+   \vspace*{-1in}
+   \begin{tikzpicture}
+     \node[inner sep=0] (header) at (0,0){\includegraphics[width=\textwidth]{ca-sty/ca-header.pdf}};
+     \node[left,text width=4.4cm,align=center,yshift=-3pt] at (header.east){\color{ca}\sffamily\fontsize{12}{12}\selectfont\pubdate};
+  \end{tikzpicture}
+  %%
+  \vspace{16pt}\\ % 14 + 16 = 30 (= 6+24)?
+  %%
+  {\sffamily\bfseries\fontsize{24}{24}\selectfont\@title\par}
+  \vspace{6pt}
+  {\color{ca}\sffamily\fontsize{12}{12}\selectfont\@author\par}
+\end{minipage}
+\egroup
+%\bigskip
+}
+
+\renewenvironment{abstract}{%
+  %\vspace{6pt}
+  {\sffamily\fontsize{8}{12}\selectfont\articleinfocontent\par}
+  \begin{adjustbox}{minipage=0.8\textwidth,center}
+   \vspace{12pt}
+    {\centering\noindent\fontsize{9}{9}\selectfont%
+      \MakeUppercase{\bfseries\relaxed Abstract}\par}
+    \vspace{-0.5\baselineskip}
+    \noindent\rule[2pt]{\columnwidth}{0.5pt}\\
+    \fontsize{7.5}{7.5}\selectfont%
+}{%
+ \par
+ \noindent\rule{\textwidth}{0.5pt}
+ \end{adjustbox}
+ \vspace{12pt}
+ %\vspace{-\bigskipamount}
+}
+\makeatother
+
+\usepackage[explicit]{titlesec}
+\titleformat{\section}%
+  {\fontsize{18}{18}\selectfont\bfseries}{}{0pt}{#1}
+% \titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+\titleformat{\subsection}%
+  {\fontsize{16}{16}\selectfont\itshape}{}{0pt}{#1}
+\titlespacing{\subsection}{0pt}{6pt}{3pt}
+
+\titleformat{\subsubsection}%
+  {\fontsize{14}{14}\selectfont\bfseries}{}{0pt}{#1}
+\titlespacing{\subsubsection}{0pt}{3pt}{3pt}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
